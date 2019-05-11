@@ -5,10 +5,9 @@ from . import views
 app_name = 'tasks'
 urlpatterns = [
     path('', views.index, name='index'),
-    # path('task/<int:id>/', views.task_detail, name='task_detail'),
     path('project/<int:id>/add_task', views.add_task, name='add_task'),
-    # path('task/<int:id>/edit/', views.task_edit, name='task_edit'),
-    # path('task/<int:id>/delete/', views.task_delete, name='task_delete'),
+    path('task/<int:id>/edit/', views.task_edit, name='task_edit'),
+    path('task/<int:id>/delete/', views.task_delete, name='task_delete'),
     path('project/', views.add_project, name='add_project'),
     path('project/<int:id>', views.project_detail, name='project_detail'),
     path('project/<int:id>/edit', views.project_edit, name='project_edit'),

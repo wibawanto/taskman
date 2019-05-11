@@ -7,7 +7,7 @@ class TaskForm(forms.Form):
     description = forms.CharField(max_length=1024)
     start_date = forms.DateField(widget=forms.SelectDateWidget())
     due_date = forms.DateField(widget=forms.SelectDateWidget())
-    deliverable = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+    deliverable = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
     staff_pic = forms.ChoiceField(choices=[(staff.user.id, staff.user.username) for staff in Staff.objects.all()])
     status = forms.ChoiceField(choices=[(tag, tag.value) for tag in TaskStatus])
 

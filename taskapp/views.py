@@ -108,3 +108,39 @@ def add_task(request, id):
     else:
         form = TaskForm()
     return render(request, 'tasks/general_form.html', context={'form': form, 'string': 'New task'})
+
+
+@login_required(login_url='/login/')
+def task_edit(request, id):
+    task = get_object_or_404(Task, pk=id)
+    if request.method == 'POST':
+        form = TaskForm(request.POST, initial={'name': task.name, 'description': task.description,
+                                               'start_date': task.start_date, 'due_date': task.due_date,
+                                               'project': task.project, 'staff_pic': task.staff_pic,
+                                               'deliverable': task.deliverable, 'status': task.status
+                                               })
+        if form.is_valid():
+            new_staff_pic = get_object_or_404(Staff, pk=form['staff_pic'].value())
+            task.name = form['name'].value()
+            task.description = form['description'].value()
+            task.start_date = form['start_date'].value()
+            task.due_date = form['due_date'].value()
+            task.staff_pic = new_staff_pic
+            task.deliverable = form['deliverable'].value()
+            task.status = form['status'].value()
+            task.save()
+            return redirect('tasks:index')
+    else:
+        form = TaskForm(initial={'name': task.name, 'description': task.description,
+                                               'start_date': task.start_date, 'due_date': task.due_date,
+                                               'project': task.project, 'staff_pic': task.staff_pic,
+                                               'deliverable': task.deliverable, 'status': task.status
+                                               })
+    return render(request, 'tasks/general_form.html', context={'form': form, 'string': 'Edit task'})
+
+
+@login_required(login_url='/login/')
+def task_delete(request, id):
+    task = get_object_or_404(Task, pk=id)
+    task.delete()
+    return redirect('tasks:index')

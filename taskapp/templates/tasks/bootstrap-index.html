@@ -20,6 +20,7 @@
 								<th>PIC</th>
 								<th>Due</th>
                                 <th>Status</th>
+                                <th></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -27,10 +28,15 @@
                             {% for task in row %}
                                 {% if task.project.id == category.id %}
                                     <tr>
-                                        <td>{{ task.name }}</td>
+                                        <td><a href="{% url 'tasks:task_edit' task.id %}">{{ task.name }}</a></td>
                                         <td>{{ task.staff_pic.user.username }}</td>
                                         <td>{{ task.due_date }}</td>
                                         <td><span class="badge">{{ task.get_status }}</span></td>
+                                        <td>
+                                            <a href="{% url 'tasks:task_delete' task.id %}" class="btn btn-default btn-sm" onclick="return confirm('Are you sure?')">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </a>
+                                        </td>
                                     </tr>
                                 {% endif %}
                             {% endfor %}

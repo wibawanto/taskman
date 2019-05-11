@@ -6,6 +6,7 @@
     <form class="general-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
-        <button type="submit">Save</button>
+        <a href="javascript:window.history.back()" class="btn btn-info" role="button">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save</button>
     </form>
 {% endblock %}
