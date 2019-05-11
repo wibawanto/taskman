@@ -1,0 +1,48 @@
+{% extends 'tasks/bootstrap.html' %}
+
+{% block content %}
+    <div class="panel-group" id="accordion">
+    {% for category in headings %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#project{{ category.id }}">
+					PROJECT #{{ forloop.counter }} : {{ category.name | upper }}
+					</a>
+				</h4>
+			</div>
+			<div id="project{{ category.id }}" class="panel-collapse collapse {% if forloop.first %}in{% endif %}">
+				<div class="panel-body">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Task</th>
+								<th>PIC</th>
+								<th>Due</th>
+                                <th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+                        {% for row in rows %}
+                            {% for task in row %}
+                                {% if task.project.id == category.id %}
+                                    <tr>
+                                        <td>{{ task.name }}</td>
+                                        <td>{{ task.staff_pic.user.username }}</td>
+                                        <td>{{ task.due_date }}</td>
+                                        <td><span class="badge">{{ task.get_status }}</span></td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+						</tbody>
+					</table>
+                <a href="{% url 'tasks:add_task' category.pk %}" class="btn btn-info" role="button">Add Task</a>
+
+
+				</div>
+			</div>
+		</div>
+    {% endfor %}
+	</div>
+{% endblock %}

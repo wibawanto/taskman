@@ -1,0 +1,13 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+    <p class="tasks-title">About project</p>
+    <div class="detail-list">
+        <p class="detail-title"><strong>Name:</strong> {{ project.name }}</p>
+    </div>
+    <div class="buttons">
+        <a class="return-button" href="{% url 'tasks:index' %}">Return</a>
+        <a class="return-button" href="{% url 'tasks:project_delete' project.id %}">Delete</a>
+        <a class="return-button" href="{% url 'tasks:project_edit' project.id %}">Edit</a>
+    </div>
+{% endblock %}

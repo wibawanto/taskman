@@ -1,0 +1,11 @@
+{% extends 'tasks/bootstrap.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1 class="tasks-title">{{ string }}</h1>
+    <form class="general-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit">Save</button>
+    </form>
+{% endblock %}
