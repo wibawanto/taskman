@@ -8,7 +8,7 @@ html, body {
   height:100%;
   width:100%;
   color:#dedede;
-  background-color: #f1f1f1;
+  background-color: #fff;
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
 }
 
@@ -31,7 +31,7 @@ header a:hover {
 
 section {
   height:70%;
-  background-color:#f1f1f1;
+  background-color:#fff;
 }
 
 section input {

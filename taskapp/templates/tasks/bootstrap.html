@@ -23,7 +23,7 @@
 			</ul>
             {% if user.is_authenticated %}
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#">Welcome, {{ user.username }}</a></li>
+				<li><a href="#">Welcome, {{ user.username }} {% if request.user.is_superuser %}(admin){% else %}(staff){% endif %}</a></li>
 				<li><a href="{% url 'tasks:logout' %}">Logout</a></li>
 			</ul>
             {% endif %}

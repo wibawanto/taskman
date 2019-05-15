@@ -14,6 +14,7 @@ class TaskForm(forms.Form):
 
 class ProjectForm(forms.Form):
     name = forms.CharField(max_length=256)
+    members = forms.MultipleChoiceField(choices=[(staff.user.id, staff.user.username) for staff in Staff.objects.all()], widget=forms.SelectMultiple(), required=False)
 
 
 class LoginForm(forms.Form):

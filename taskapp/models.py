@@ -14,6 +14,7 @@ class Staff(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=256)
+    members = models.ManyToManyField(Staff)
     history = HistoricalRecords()
 
     def __str__(self):
