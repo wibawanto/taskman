@@ -1,9 +1,12 @@
+from datetime import date
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 
-from taskapp.forms import LoginForm, ProjectForm, TaskForm
+from taskapp.forms import LoginForm, ProjectForm, TaskForm, ProfileForm
 from taskapp.models import Project, Task, Staff
 
 
@@ -31,7 +34,11 @@ def logout_view(request):
 
 @login_required(login_url='/login/')
 def index(request):
-    headings = Project.objects.all()
+    if request.user.is_superuser:
+        headings = Project.objects.all()
+    else:
+        headings = Project.objects.filter(members__in=[request.user.staff])
+
     data = {cat: Task.objects.filter(project=cat.pk) for cat in headings}
     columns = [data[heading] for heading in headings]
     columns = list(map(lambda x: list(x), columns))
@@ -42,9 +49,17 @@ def index(request):
         rows = [[col[i] for col in columns] for i in range(max_len)]
     else:
         rows = None
+
+    try:
+        tasks_overdue = Task.objects.filter(project__members__in=[request.user.staff], due_date__lt=date.today())
+    except ObjectDoesNotExist:
+        tasks_overdue = []
+
+
     return render(request, 'tasks/bootstrap-index.html', context={
         'headings': headings,
         'rows': rows,
+        'tasks_overdue': tasks_overdue
     })
 
 
@@ -86,6 +101,19 @@ def project_delete(request, id):
     project = get_object_or_404(Project, pk=id)
     project.delete()
     return redirect('tasks:index')
+
+
+@login_required(login_url='/login/')
+def profile_edit(request):
+    staff = request.user.staff
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=staff)
+        if form.is_valid():
+            form.save()
+            return redirect('tasks:index')
+    else:
+        form = ProfileForm(instance=staff)
+    return render(request, 'tasks/general_form.html', context={'form': form, 'string': 'Edit profile'})
 
 
 @login_required(login_url='/login/')

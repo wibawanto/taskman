@@ -20,3 +20,9 @@ class ProjectForm(forms.Form):
 class LoginForm(forms.Form):
     login = forms.CharField(max_length=32)
     password = forms.CharField(widget=forms.PasswordInput())
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Staff
+        exclude = ('user',)

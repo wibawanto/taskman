@@ -1,5 +1,17 @@
 <!-- Latest compiled and minified Bootstrap CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<style>
+    .alert.alert-server {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+</style>
+{% if tasks_overdue %}
+<div class="alert alert-danger alert-server" role="alert">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>Task Reminder</strong> You have <strong>{{ tasks_overdue|length }}</strong> overdue tasks. Please complete your task or change the due date.
+</div>
+{% endif %}
 <!-- Fixed navbar -->
 <nav class="navbar navbar-default">
 	<div class="container">
@@ -16,15 +28,16 @@
 			<ul class="nav navbar-nav">
 {#				<li class="active"><a href="#">Home</a></li>#}
                 {% if user.is_authenticated %}
-				    <li class="{% if request.resolver_match.url_name == "index" %}active{% endif %}"><a href="{% url 'tasks:index' %}">Tasks</a></li>
-                    <li class="{% if request.resolver_match.url_name == "add_project" %}active{% endif %}"><a href="{% url 'tasks:add_project' %}">Add Project</a></li>
-				    <li class="{% if request.resolver_match.url_name == "twilio" %}active{% endif %}"><a href="{% url 'chats:twilio' %}">Live Chat</a></li>
+				    <li class="{% if request.resolver_match.url_name == "index" %}active{% endif %}"><a href="{% url 'tasks:index' %}">tasks</a></li>
+                    <li class="{% if request.resolver_match.url_name == "add_project" %}active{% endif %}"><a href="{% url 'tasks:add_project' %}">add project</a></li>
+				    <li class="{% if request.resolver_match.url_name == "twilio" %}active{% endif %}"><a href="{% url 'chats:twilio' %}">live chat</a></li>
+                    <li class="{% if request.resolver_match.url_name == "edit_profile" %}active{% endif %}"><a href="{% url 'tasks:edit_profile' %}">profile</a></li>
                 {% endif %}
 			</ul>
             {% if user.is_authenticated %}
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#">Welcome, {{ user.username }} {% if request.user.is_superuser %}(admin){% else %}(staff){% endif %}</a></li>
-				<li><a href="{% url 'tasks:logout' %}">Logout</a></li>
+				<li><a href="#">welcome, {{ user.username }} {% if request.user.is_superuser %}(admin){% else %}(staff){% endif %}</a></li>
+				<li><a href="{% url 'tasks:logout' %}">logout</a></li>
 			</ul>
             {% endif %}
 		</div>

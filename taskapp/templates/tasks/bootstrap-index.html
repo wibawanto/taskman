@@ -2,53 +2,57 @@
 
 {% block content %}
     <div class="panel-group" id="accordion">
-    {% for category in headings %}
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h4 class="panel-title">
-					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#project{{ category.id }}">
-					<span class="glyphicon glyphicon-th-list"></span> PROJECT #{{ forloop.counter }} : {{ category.name | upper }}
-					</a>
-				</h4>
-			</div>
-			<div id="project{{ category.id }}" class="panel-collapse collapse {% if forloop.first %}in{% endif %}">
-				<div class="panel-body">
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th>Task</th>
-								<th>PIC</th>
-								<th>Due</th>
-                                <th>Status</th>
-                                <th></th>
-							</tr>
-						</thead>
-						<tbody>
-                        {% for row in rows %}
-                            {% for task in row %}
-                                {% if task.project.id == category.id %}
-                                    <tr>
-                                        <td><a href="{% url 'tasks:task_edit' task.id %}">{{ task.name }}</a></td>
-                                        <td>{{ task.staff_pic.user.username }}</td>
-                                        <td>{{ task.due_date }}</td>
-                                        <td><span class="badge">{{ task.get_status }}</span></td>
-                                        <td>
-                                            <a href="{% url 'tasks:task_delete' task.id %}" class="btn btn-default btn-sm" onclick="return confirm('Are you sure?')">
-                                                <span class="glyphicon glyphicon-remove"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                {% endif %}
+    {% if headings %}
+        {% for category in headings %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#project{{ category.id }}">
+                        <span class="glyphicon glyphicon-th-list"></span> PROJECT #{{ forloop.counter }} : {{ category.name | upper }}
+                        </a>
+                    </h4>
+                </div>
+                <div id="project{{ category.id }}" class="panel-collapse collapse {% if forloop.first %}in{% endif %}">
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Task</th>
+                                    <th>PIC</th>
+                                    <th>Due</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for row in rows %}
+                                {% for task in row %}
+                                    {% if task.project.id == category.id %}
+                                        <tr>
+                                            <td><a href="{% url 'tasks:task_edit' task.id %}">{{ task.name }}</a></td>
+                                            <td>{{ task.staff_pic.user.username }}</td>
+                                            <td>{{ task.due_date }}</td>
+                                            <td><span class="badge">{{ task.get_status }}</span></td>
+                                            <td>
+                                                <a href="{% url 'tasks:task_delete' task.id %}" class="btn btn-default btn-sm" onclick="return confirm('Are you sure?')">
+                                                    <span class="glyphicon glyphicon-remove"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
                             {% endfor %}
-                        {% endfor %}
-						</tbody>
-					</table>
-                <a href="{% url 'tasks:add_task' category.pk %}" class="btn btn-info" role="button">Add Task</a>
+                            </tbody>
+                        </table>
+                    <a href="{% url 'tasks:add_task' category.pk %}" class="btn btn-info" role="button">Add Task</a>
 
 
-				</div>
-			</div>
-		</div>
-    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        No task assigned
+    {% endif %}
 	</div>
 {% endblock %}
